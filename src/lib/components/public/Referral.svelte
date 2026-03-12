@@ -2,7 +2,7 @@
 	import { Gift, Users, TrendingUp, ArrowRight } from 'lucide-svelte';
 </script>
 
-<section id="referral" class="py-20 lg:py-32 bg-[#fff8f8]">
+<section id="referral" class="py-20 lg:py-32 bg-orange-50 dark:bg-orange-950">
 	<div class="container mx-auto px-4 lg:px-8">
 		<div class="bg-gradient-to-br from-ring to-[#2e6bd8] rounded-3xl overflow-hidden">
 			<div class="grid lg:grid-cols-2 gap-12 items-center p-8 lg:p-16">

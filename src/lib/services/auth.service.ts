@@ -89,6 +89,22 @@ class AuthService {
 		return response;
 	}
 
+	// OAuth Methods
+	loginWithGoogle(): void {
+		if (typeof window === 'undefined') return;
+		// VITE_API_BASE_URL includes /api, so we need to use just the base URL
+		const baseUrl = import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5000';
+		window.location.href = `${baseUrl}/api/auth/oauth/google`;
+	}
+
+	handleOAuthCallback(token: string): void {
+		this.setToken(token);
+	}
+
+	getApiUrl(): string {
+		return import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+	}
+
 	logout(): void {
 		localStorage.removeItem(this.TOKEN_KEY);
 		localStorage.removeItem(this.USER_KEY);

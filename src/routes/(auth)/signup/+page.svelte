@@ -85,10 +85,7 @@ declare global {
 	};
 
 	const handleGoogleSignup = () => {
-		console.log('Google signup clicked');
-		// TODO: Implement Google OAuth flow
-		// This would typically redirect to your backend's OAuth endpoint
-		window.location.href = '/api/auth/google';
+		authService.loginWithGoogle();
 	};
 
 	const handleMetamaskSignup = async () => {

@@ -70,12 +70,12 @@
 	<!-- Right Actions -->
 	<div class="flex items-center gap-4">
 		<!-- Search -->
-		<div class="hidden md:flex items-center bg-gray-100 rounded-full px-4 py-2">
-			<Search class="w-4 h-4 text-gray-500" />
+		<div class="hidden md:flex items-center bg-gray-100 dark:bg-gray-800 rounded-full px-4 py-2">
+			<Search class="w-4 h-4 text-gray-500 dark:text-gray-400" />
 			<input
 				type="text"
 				placeholder="Search..."
-				class="bg-transparent border-none outline-none text-sm ml-2 w-40"
+				class="bg-transparent border-none outline-none text-sm ml-2 w-40 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
 			/>
 		</div>
 

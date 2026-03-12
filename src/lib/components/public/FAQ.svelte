@@ -83,7 +83,7 @@
 			<h3 class="text-2xl font-bold text-foreground mb-2">Still have questions?</h3>
 			<p class="text-muted-foreground mb-6">Our support team is here to help you 24/7</p>
 			<div class="flex flex-col sm:flex-row gap-4 justify-center">
-				<a href="/support-page" class="text-primary hover:text-primary-dark font-semibold transition-colors">
+				<a href="/support" class="text-primary hover:text-primary-dark font-semibold transition-colors">
 					Visit Help Center
 				</a>
 				<a

@@ -24,7 +24,7 @@
 					Save smart, earn rewards, and build wealth effortlessly.
 				</p>
 
-				<a href="/about-us" class="flex sm:flex-row gap-4 mb-12">
+				<a href="/about" class="flex sm:flex-row gap-4 mb-12">
 					<button
 						class="bg-blue-500 text-white flex items-center gap-2 hover:opacity-90 font-semibold cursor-pointer transition-opacity text-base px-8 py-2.5 rounded-full shadow-glow">
 						Discover More

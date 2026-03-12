@@ -338,13 +338,13 @@
 			Deposit
 		</button>
 		<button
-			class="flex-1 px-6 py-3 border-2 font-semibold border-blue-500 text-blue-500 rounded-full transition-colors cursor-pointer flex items-center justify-center gap-2 hover:bg-blue-50"
+			class="flex-1 px-6 py-3 border-2 font-semibold border-blue-500 text-blue-500 rounded-full transition-colors cursor-pointer flex items-center justify-center gap-2 hover:bg-blue-50 dark:hover:bg-blue-900/30"
 		>
 			<CirclePlus class="w-5 h-5" />
 			Start new plan
 		</button>
 		<button
-			class="flex-1 px-6 py-3 border-2 border-blue-500 cursor-pointer text-blue-500 rounded-full font-semibold transition-colors flex items-center justify-center gap-2 hover:bg-blue-50"
+			class="flex-1 px-6 py-3 border-2 border-blue-500 cursor-pointer text-blue-500 rounded-full font-semibold transition-colors flex items-center justify-center gap-2 hover:bg-blue-50 dark:hover:bg-blue-900/30"
 		>
 			<DollarSign class="w-5 h-5" />
 			Withdraw
@@ -354,7 +354,7 @@
 	<!-- Savings Plans -->
 	<div class="mb-6">
 		<div class="flex items-center justify-between mb-4">
-			<h3 class="text-xl font-semibold text-gray-900">Saving Plans</h3>
+			<h3 class="text-xl font-semibold text-gray-900 dark:text-white">Saving Plans</h3>
 		</div>
 
 		{#if isLoadingData}

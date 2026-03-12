@@ -35,7 +35,7 @@
 	];
 </script>
 
-<section class="py-20 lg:py-32 bg-[#f2f9ff]">
+<section class="py-20 lg:py-32 bg-blue-50 dark:bg-blue-950">
 	<div class="container mx-auto px-4 lg:px-8">
 		<div class="text-center mb-16 animate-fade-in">
 			<h2 class="text-3xl lg:text-4xl font-bold text-foreground mb-4">Why Choose SavFi?</h2>

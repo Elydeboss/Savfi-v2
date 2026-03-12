@@ -9,15 +9,15 @@
 			{ name: 'SwiftFi', href: '/products#products' }
 		],
 		company: [
-			{ name: 'About Us', href: '/about-us' },
+			{ name: 'About Us', href: '/about' },
 			{ name: 'How It Works', href: '/#how-it-works' },
 			{ name: 'Referral', href: '/#referral' }
 		],
 		support: [
-			{ name: 'Help Center', href: '/support-page' },
+			{ name: 'Help Center', href: '/support' },
 			{ name: 'FAQ', href: '/#faq' },
-			{ name: 'Contact Us', href: '/support-page' },
-			{ name: 'Security', href: '/security-page' }
+			{ name: 'Contact Us', href: '/support' },
+			{ name: 'Security', href: '/security' }
 		],
 		legal: [
 			{ name: 'Privacy Policy', href: '/privacy-policy' },

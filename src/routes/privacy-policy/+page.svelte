@@ -197,7 +197,7 @@
 		</div>
 
 		<div class="mt-12 text-center">
-			<a href="/about-us" class="inline-flex items-center text-blue-500 hover:text-blue-600 font-semibold">
+			<a href="/about" class="inline-flex items-center text-blue-500 hover:text-blue-600 font-semibold">
 				Back to About Us
 				<ArrowRight class="w-4 h-4 ml-2" />
 			</a>

@@ -5,8 +5,8 @@
 	const navLinks = [
 		{ name: 'Home', href: '/' },
 		{ name: 'Products', href: '/products' },
-		{ name: 'About Us', href: '/about-us' },
-		{ name: 'Support', href: '/support-page' }
+		{ name: 'About Us', href: '/about' },
+		{ name: 'Support', href: '/support' }
 	];
 
 	let isMenuOpen = $state(false);

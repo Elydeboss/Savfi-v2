@@ -92,7 +92,7 @@
 
 					<p class="text-xs text-muted-foreground mt-6">
 						Didn't receive the email? Check your spam folder or
-						<a href="/support-page" class="text-primary hover:underline">contact support</a>
+						<a href="/support" class="text-primary hover:underline">contact support</a>
 					</p>
 				</div>
 			{/if}
@@ -100,7 +100,7 @@
 
 		<div class="mt-6 text-center">
 			<p class="text-sm text-muted-foreground">
-				Need help? <a href="/support-page" class="text-primary hover:underline">Contact Support</a>
+				Need help? <a href="/support" class="text-primary hover:underline">Contact Support</a>
 			</p>
 		</div>
 	</div>
