@@ -35,29 +35,37 @@
 	];
 </script>
 
-<section class="py-20 lg:py-32 bg-blue-50 dark:bg-blue-950">
-	<div class="container mx-auto px-4 lg:px-8">
-		<div class="text-center mb-16 animate-fade-in">
-			<h2 class="text-3xl lg:text-4xl font-bold text-foreground mb-4">Why Choose SavFi?</h2>
-			<p class="text-xl text-muted-foreground max-w-2xl mx-auto">
+<section class="py-16 sm:py-20 lg:py-32 bg-blue-50 dark:bg-blue-950">
+	<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+		<!-- Section Header -->
+		<div class="text-center mb-10 sm:mb-16 animate-fade-in">
+			<h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">
+				Why Choose SavFi?
+			</h2>
+			<p class="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto px-4">
 				Built for Nigerians who want to save smarter and grow their wealth securely on Solana
 			</p>
 		</div>
 
-		<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+		<!-- Features Grid -->
+		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
 			{#each features as feature, index}
 				<div
-					class="bg-card rounded-2xl p-8 border border-border hover:border-primary transition-all duration-300 hover:shadow-lg animate-slide-up"
+					class="bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-8 border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition-all duration-300 hover:shadow-lg animate-slide-up"
+					style="animation-delay: {index * 100}ms"
 				>
-					<div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6">
-						<svelte:component this={feature.icon} class="w-7 h-7 text-primary" />
+					<!-- Icon -->
+					<div class="w-12 h-12 sm:w-14 sm:h-14 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mb-4 sm:mb-6">
+						<svelte:component this={feature.icon} class="w-6 h-6 sm:w-7 sm:h-7 text-blue-500" />
 					</div>
 
-					<h3 class="text-xl font-bold font-dm-sans text-foreground mb-3">
+					<!-- Title -->
+					<h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-3">
 						{feature.title}
 					</h3>
 
-					<p class="text-foreground/80 leading-relaxed">
+					<!-- Description -->
+					<p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
 						{feature.description}
 					</p>
 				</div>
@@ -65,3 +73,27 @@
 		</div>
 	</div>
 </section>
+
+<style>
+	@keyframes slide-up {
+		from {
+			opacity: 0;
+			transform: translateY(30px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+	.animate-slide-up {
+		animation: slide-up 0.6s ease-out forwards;
+		opacity: 0;
+	}
+	@keyframes fade-in {
+		from { opacity: 0; }
+		to { opacity: 1; }
+	}
+	.animate-fade-in {
+		animation: fade-in 0.8s ease-out forwards;
+	}
+</style>

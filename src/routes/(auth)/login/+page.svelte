@@ -40,34 +40,44 @@
 <svelte:head>
 	<title>Login - SavFi</title>
 	<meta name="description" content="Sign in to your SavFi account to manage your savings" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </svelte:head>
 
-<div class="min-h-screen flex items-center justify-center pt-20 pb-12 px-4">
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center py-6 sm:py-12 px-4 sm:px-6">
 	<div class="w-full max-w-md">
-		<a href="/" class="inline-flex items-center text-foreground/80 hover:text-foreground mb-6 transition-colors">
+		<!-- Back to Home -->
+		<a href="/" class="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-6 transition-colors">
 			<ArrowLeft class="w-4 h-4 mr-2" />
-			Back to Home
+			<span class="text-sm">Back to Home</span>
 		</a>
 
-		<div class="bg-card rounded-3xl shadow-lg p-8">
-			<div class="text-center mb-8">
-				<h1 class="text-3xl font-bold text-foreground mb-2">Welcome Back</h1>
-				<p class="text-muted-foreground">Sign in to your SavFi account</p>
+		<!-- Login Card -->
+		<div class="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-lg p-6 sm:p-8">
+			<!-- Header -->
+			<div class="text-center mb-6 sm:mb-8">
+				<h1 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+					Welcome Back
+				</h1>
+				<p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">
+					Sign in to your SavFi account
+				</p>
 			</div>
 
+			<!-- Error Message -->
 			{#if error}
-				<div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
-					<p class="text-sm text-red-600">{error}</p>
+				<div class="mb-4 sm:mb-6 p-3 sm:p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+					<p class="text-sm text-red-600 dark:text-red-400">{error}</p>
 				</div>
 			{/if}
 
-			<form onsubmit={handleSubmit} class="space-y-6">
+			<!-- Login Form -->
+			<form onsubmit={handleSubmit} class="space-y-4 sm:space-y-5">
 				<!-- Continue with Google Button -->
 				<button
 					type="button"
 					disabled={isLoading}
 					onclick={handleGoogleLogin}
-					class="w-full bg-white border-2 border-gray-200 text-gray-700 py-3 px-4 rounded-xl font-semibold flex items-center justify-center gap-3 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+					class="w-full bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 py-2.5 sm:py-3 px-4 rounded-xl font-semibold flex items-center justify-center gap-3 hover:bg-gray-50 dark:hover:bg-gray-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm shadow-sm hover:shadow-md"
 				>
 					<svg class="w-5 h-5" viewBox="0 0 24 24">
 						<path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -81,14 +91,16 @@
 				<!-- Divider -->
 				<div class="relative">
 					<div class="absolute inset-0 flex items-center">
-						<div class="w-full border-t border-gray-300"></div>
+						<div class="w-full border-t border-gray-300 dark:border-gray-600"></div>
 					</div>
 					<div class="relative flex justify-center text-sm">
-						<span class="px-2 bg-card text-muted-foreground">or</span>
+						<span class="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">or</span>
 					</div>
 				</div>
+
+				<!-- Email Input -->
 				<div>
-					<label for="email" class="block text-sm font-medium text-foreground mb-2">
+					<label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
 						Email Address
 					</label>
 					<input
@@ -98,12 +110,14 @@
 						placeholder="you@example.com"
 						required
 						disabled={isLoading}
-						class="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all disabled:opacity-50"
+						autocomplete="email"
+						class="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-50 text-sm"
 					/>
 				</div>
 
+				<!-- Password Input -->
 				<div>
-					<label for="password" class="block text-sm font-medium text-foreground mb-2">
+					<label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
 						Password
 					</label>
 					<input
@@ -113,37 +127,49 @@
 						placeholder="••••••••"
 						required
 						disabled={isLoading}
-						class="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all disabled:opacity-50"
+						autocomplete="current-password"
+						class="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-50 text-sm"
 					/>
 				</div>
 
+				<!-- Remember Me & Forgot Password -->
 				<div class="flex items-center justify-between">
-					<label class="flex items-center">
+					<label class="flex items-center cursor-pointer">
 						<input
 							type="checkbox"
 							bind:checked={formData.rememberMe}
 							disabled={isLoading}
-							class="w-4 h-4 rounded border-border text-primary focus:ring-primary disabled:opacity-50"
+							class="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-blue-500 focus:ring-blue-500 disabled:opacity-50"
 						/>
-						<span class="ml-2 text-sm text-foreground/80">Remember me</span>
+						<span class="ml-2 text-sm text-gray-600 dark:text-gray-400">Remember me</span>
 					</label>
-					<a href="/forgot-password" class="text-sm text-primary hover:text-primary-dark transition-colors">
+					<a href="/forgot-password" class="text-sm text-blue-500 hover:text-blue-600 transition-colors">
 						Forgot password?
 					</a>
 				</div>
 
+				<!-- Sign In Button -->
 				<button
 					type="submit"
 					disabled={isLoading}
-					class="w-full bg-primary text-white py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
-					{isLoading ? 'Signing in...' : 'Sign In'}
+					class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2.5 sm:py-3 rounded-xl font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+				>
+					{#if isLoading}
+						<span class="flex items-center justify-center gap-2">
+							<div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+							Signing in...
+						</span>
+					{:else}
+						Sign In
+					{/if}
 				</button>
 			</form>
 
-			<div class="mt-8 text-center">
-				<p class="text-foreground/80">
+			<!-- Sign Up Link -->
+			<div class="mt-6 sm:mt-8 text-center">
+				<p class="text-sm text-gray-600 dark:text-gray-400">
 					Don't have an account?
-					<a href="/signup" class="text-primary font-semibold hover:text-primary-dark transition-colors">Sign up</a>
+					<a href="/signup" class="text-blue-500 font-semibold hover:text-blue-600 transition-colors">Sign up</a>
 				</p>
 			</div>
 		</div>

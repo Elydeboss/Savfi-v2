@@ -183,9 +183,9 @@
 		</div>
 	{:else}
 		<!-- Welcome Section -->
-		<div class="mb-6">
-			<h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
-				Welcome {userName} 👋
+		<div class="mb-4 sm:mb-6">
+			<h2 class="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white mb-1 flex flex-col sm:flex-row sm:items-center sm:gap-2">
+				<span>Welcome {userName} 👋</span>
 				<span class="text-sm font-normal text-gray-600 dark:text-gray-400"> Lock in. Level up. </span>
 			</h2>
 		</div>
@@ -217,49 +217,50 @@
 	{/if}
 
 	<!-- Balance Cards -->
-	<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+	<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6">
 		<!-- Total Balance Card -->
 		<div
-			class="bg-[#1D85D4] rounded-2xl px-6 py-8 text-white relative overflow-hidden"
+			class="bg-[#1D85D4] rounded-2xl px-4 sm:px-6 py-6 sm:py-8 text-white relative overflow-hidden"
 		>
 			<div
-				class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"
+				class="absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 bg-white/10 rounded-full -mr-12 -mt-12 sm:-mr-16 sm:-mt-16"
 			></div>
 			<div
-				class="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-12 -mb-12"
+				class="absolute bottom-0 left-0 w-20 h-20 sm:w-24 sm:h-24 bg-white/10 rounded-full -ml-10 -mb-10 sm:-ml-12 sm:-mb-12"
 			></div>
 
 			<div class="relative z-10">
-				<div class="flex items-center justify-between mb-8">
-					<span class="text-sm opacity-90">Total balance</span>
+				<div class="flex items-center justify-between mb-4 sm:mb-8">
+					<span class="text-xs sm:text-sm opacity-90">Total balance</span>
 					<button
 						onclick={() => (showBalance = !showBalance)}
 						class="p-1.5 hover:bg-white/20 cursor-pointer rounded-lg transition-colors"
+						aria-label={showBalance ? 'Hide balance' : 'Show balance'}
 					>
 						{#if showBalance}
-							<Eye class="w-5 h-5" />
+							<Eye class="w-4 h-4 sm:w-5 sm:h-5" />
 						{:else}
-							<EyeOff class="w-5 h-5" />
+							<EyeOff class="w-4 h-4 sm:w-5 sm:h-5" />
 						{/if}
 					</button>
 				</div>
 
 				<div class="mb-2 text-white">
-					<div class="text-4xl font-bold flex gap-1 items-center mb-1">
+					<div class="text-2xl sm:text-3xl md:text-4xl font-bold flex flex-col sm:flex-row gap-1 sm:items-center mb-1">
 						{showBalance ? `${totalBalance.toFixed(2)}` : '****'}
 						<!-- Currency Button -->
-						<div class="relative">
+						<div class="relative inline-block">
 							<button
 								onclick={() => (openDropdown = !openDropdown)}
 								class="flex items-center gap-1"
 							>
-								<span class="text-lg font-semibold">{currency}</span>
-								<ChevronDown class="w-4 h-4" />
+								<span class="text-base sm:text-lg font-semibold">{currency}</span>
+								<ChevronDown class="w-3 h-3 sm:w-4 sm:h-4" />
 							</button>
 							<!-- DROPDOWN MENU -->
 							{#if openDropdown}
 								<div
-									class="absolute top-7 p-0 left-0 bg-white text-gray-900 rounded-lg shadow-lg overflow-hidden z-20"
+									class="absolute top-7 sm:top-8 p-0 left-0 bg-white text-gray-900 rounded-lg shadow-lg overflow-hidden z-20 min-w-[100px]"
 								>
 									<button
 										class="w-full text-sm text-left px-3 py-2 hover:bg-gray-100"
@@ -283,18 +284,19 @@
 							{/if}
 						</div>
 					</div>
-					<div class="mt-3 flex justify-between flex-wrap">
-						<p class="text-sm font-medium text-white">
+					<div class="mt-2 sm:mt-3 flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
+						<p class="text-xs sm:text-sm font-medium text-white">
 							₦{(totalBalance * 1600).toFixed(2)}
 						</p>
 
 						<div class="flex items-center gap-2">
-							<span class="text-xs"> {walletAddress ? formattedAddress(walletAddress) : 'No wallet'} </span>
+							<span class="text-xs truncate max-w-[100px] sm:max-w-none">{walletAddress ? formattedAddress(walletAddress) : 'No wallet'}</span>
 							<button
 								onclick={() => copyToClipboard(walletAddress)}
 								class="p-1 hover:bg-white/20 cursor-pointer rounded transition-colors"
+								aria-label="Copy wallet address"
 							>
-								<Copy class="w-4 h-4" />
+								<Copy class="w-3 h-3 sm:w-4 sm:h-4" />
 							</button>
 						</div>
 					</div>
@@ -304,22 +306,22 @@
 
 		<!-- Active Plans Card -->
 		<div
-			class="bg-[#D6C8FF] rounded-2xl p-6 text-white relative overflow-hidden"
+			class="bg-[#D6C8FF] rounded-2xl p-4 sm:p-6 text-white relative overflow-hidden"
 		>
 			<div
-				class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"
+				class="absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 bg-white/10 rounded-full -mr-12 -mt-12 sm:-mr-16 sm:-mt-16"
 			></div>
 
 			<div class="relative z-10">
-				<span class="text-sm text-gray-900 block mb-8"> Active savings plan </span>
+				<span class="text-xs sm:text-sm text-gray-900 block mb-4 sm:mb-8"> Active savings plan </span>
 
 				<div class="mb-2">
-					<div class="text-4xl text-gray-900 font-bold mb-1">
+					<div class="text-2xl sm:text-3xl md:text-4xl text-gray-900 font-bold mb-1">
 						{activePlansCount === 0
 							? '0 plan'
 							: `${activePlansCount} ${activePlansCount === 1 ? 'plan' : 'plans'}`}
 					</div>
-					<p class="text-sm font-medium text-gray-900">
+					<p class="text-xs sm:text-sm font-medium text-gray-900">
 						{totalBalance > 0
 							? `Total value: ${totalBalance.toFixed(2)} USDT`
 							: 'Start saving today'}
