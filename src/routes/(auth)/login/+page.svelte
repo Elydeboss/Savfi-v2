@@ -1,6 +1,8 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { ArrowLeft } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import { authService } from '$lib/services/auth.service';
 
 	let formData = $state({
@@ -11,6 +13,16 @@
 
 	let isLoading = $state(false);
 	let error = $state('');
+	let redirectUrl = $state('/dashboard');
+
+	onMount(() => {
+		// Get redirect parameter from URL query string
+		const params = new URLSearchParams($page.url.search);
+		const redirect = params.get('redirect');
+		if (redirect) {
+			redirectUrl = redirect;
+		}
+	});
 
 	async function handleSubmit(e: Event) {
 		e.preventDefault();
@@ -23,8 +35,8 @@
 				password: formData.password
 			});
 
-			// Redirect to dashboard
-			await goto('/dashboard');
+			// Redirect to the original destination or dashboard
+			await goto(redirectUrl);
 		} catch (err: any) {
 			error = err.response?.data?.error || err.message || 'An error occurred during login';
 		} finally {

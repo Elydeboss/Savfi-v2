@@ -106,8 +106,13 @@ class AuthService {
 	}
 
 	logout(): void {
-		localStorage.removeItem(this.TOKEN_KEY);
-		localStorage.removeItem(this.USER_KEY);
+		if (typeof window !== 'undefined') {
+			localStorage.removeItem(this.TOKEN_KEY);
+			localStorage.removeItem(this.USER_KEY);
+
+			// Clear the auth cookie
+			document.cookie = 'auth_token=; path=/; max-age=0';
+		}
 	}
 
 	getToken(): string | null {
@@ -118,6 +123,11 @@ class AuthService {
 	private setToken(token: string): void {
 		if (typeof window === 'undefined') return;
 		localStorage.setItem(this.TOKEN_KEY, token);
+
+		// Set cookie for server-side auth checks
+		// Using 7 days expiration, SameSite=Lax for security
+		const maxAge = 7 * 24 * 60 * 60; // 7 days in seconds
+		document.cookie = `auth_token=${token}; path=/; max-age=${maxAge}; SameSite=Lax`;
 	}
 
 	getUserData(): User | null {

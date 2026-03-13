@@ -111,9 +111,28 @@ export const theme = derived(uiStore, $ui => $ui.theme);
 export const toasts = derived(uiStore, $ui => $ui.toasts);
 export const isModalOpen = derived(uiStore, $ui => $ui.modal.isOpen);
 export const isSidebarOpen = derived(uiStore, $ui => $ui.sidebarOpen);
-export const isDarkMode = derived(theme, $theme => {
-	if ($theme === 'auto') {
-		return window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+// Create a reactive store for system dark mode preference
+// This prevents unnecessary re-computation of window.matchMedia()
+const systemDarkMode = writable(false);
+
+// Set up listener for system preference changes (only on client)
+if (typeof window !== 'undefined') {
+	const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+	systemDarkMode.set(mediaQuery.matches);
+
+	// Listen for system preference changes
+	mediaQuery.addEventListener('change', (e) => {
+		systemDarkMode.set(e.matches);
+	});
+}
+
+export const isDarkMode = derived(
+	[theme, systemDarkMode],
+	([$theme, $systemDarkMode]) => {
+		if ($theme === 'auto') {
+			return $systemDarkMode;
+		}
+		return $theme === 'dark';
 	}
-	return $theme === 'dark';
-});
+);
