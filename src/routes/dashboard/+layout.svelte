@@ -53,7 +53,7 @@
 	<Sidebar {sidebarItems} {isSidebarOpen} close={() => isSidebarOpen = false} />
 
 	<!-- Main Content -->
-	<div class="flex-1 md:ml-[260px] lg:ml-[332px] flex flex-col">
+	<div class="flex-1 md:ml-64 lg:ml-72 flex flex-col">
 		<DashboardNavbar title={pageTitle} />
 
 		<main class="flex-1 p-4 md:p-6 pt-20 md:pt-20">

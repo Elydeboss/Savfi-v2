@@ -44,7 +44,7 @@
 </script>
 
 <aside
-	class="fixed top-0 left-0 w-[260px] lg:w-[332px] h-full font-medium transform z-50 transition-transform duration-300 {isSidebarOpen
+	class="fixed top-0 left-0 w-64 md:w-72 h-full max-w-[20vw] font-medium transform z-50 transition-transform duration-300 {isSidebarOpen
 		? 'translate-x-0'
 		: '-translate-x-full'} md:translate-x-0 {$isDarkMode
 		? 'bg-[#0D1B2A] text-white'

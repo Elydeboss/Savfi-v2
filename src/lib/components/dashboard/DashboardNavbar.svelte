@@ -60,7 +60,7 @@
 </script>
 
 <nav
-	class="fixed top-0 right-0 left-0 md:left-[260px] lg:left-[332px] h-16 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-4 md:px-6 z-30"
+	class="fixed top-0 right-0 left-0 md:left-64 lg:left-72 h-16 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-4 md:px-6 z-30"
 >
 	<!-- Page Title -->
 	<div class="flex items-center">
@@ -75,7 +75,7 @@
 			<input
 				type="text"
 				placeholder="Search..."
-				class="bg-transparent border-none outline-none text-sm ml-2 w-40 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+				class="bg-transparent border-none outline-none text-sm ml-2 w-32 md:w-48 lg:w-64 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
 			/>
 		</div>
 
@@ -114,16 +114,16 @@
 					alt={user.name}
 					class="w-8 h-8 rounded-full object-cover"
 				/>
-				<div class="hidden md:block text-left">
-					<p class="text-sm font-medium text-gray-900 dark:text-white">{user.name}</p>
-					<p class="text-xs text-gray-500 dark:text-gray-400">{user.email}</p>
+				<div class="text-left">
+					<p class="text-sm font-medium text-gray-900 dark:text-white truncate max-w-[100px] sm:max-w-none">{user.name}</p>
+					<p class="hidden sm:block text-xs text-gray-500 dark:text-gray-400">{user.email}</p>
 				</div>
 				<ChevronDown class="w-4 h-4 text-gray-500 dark:text-gray-400" />
 			</button>
 
 			{#if isProfileDropdownOpen}
 				<div
-					class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50"
+					class="absolute right-0 mt-2 w-56 sm:w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50"
 				>
 					<a
 						href="/dashboard/profile"

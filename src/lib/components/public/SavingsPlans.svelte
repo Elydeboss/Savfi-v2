@@ -87,7 +87,7 @@
 			</p>
 		</div>
 
-		<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
 			{#each vaults as vault}
 				<div
 					class="bg-card rounded-2xl p-6 border border-border hover:shadow-lg transition-all duration-300 animate-slide-up"

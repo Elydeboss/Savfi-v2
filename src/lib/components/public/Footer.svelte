@@ -31,7 +31,7 @@
 <footer class="bg-gray-900 dark:bg-black text-white">
 	<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
 		<!-- Main Footer Content -->
-		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-12 mb-8 sm:mb-12">
+		<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8 lg:gap-12 mb-8">
 			<!-- Brand Column -->
 			<div class="lg:col-span-2">
 				<a href="/" class="inline-block mb-4">

@@ -61,7 +61,7 @@
 			</div>
 
 			<!-- Right Content - Hero Image -->
-			<div class="relative order-first lg:order-last mb-8 lg:mb-0">
+			<div class="relative order-first lg:order-last mb-8 lg:mb-0 hidden sm:block">
 				<div class="relative">
 					<!-- Background glow effect 
 					<div class="absolute inset-0 bg-blue-500/20 dark:bg-blue-500/10 rounded-3xl blur-3xl transform -rotate-6"></div> -->

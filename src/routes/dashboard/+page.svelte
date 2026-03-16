@@ -64,7 +64,6 @@
 	let displayPlans = $state<DisplayPlan[]>([]);
 	let totalBalance = $state(0);
 	let totalInterest = $state(0);
-	let activePlansCount = $state(0);
 	let isLoadingData = $state(true);
 
 	let userName = $state('User');
@@ -139,14 +138,13 @@
 					isActive: plan.status === 'active',
 					status: 'Active',
 					minDeposit: config.minDeposit,
-					lockPeriod: plan.lockPeriod
+					lockPeriod: config.lockPeriod
 				};
 			});
 
 			// Update totals from statistics
 			totalBalance = stats.totalBalance;
 			totalInterest = stats.totalInterest;
-			activePlansCount = stats.activePlans;
 
 		} catch (error) {
 			console.error('Failed to load savings plans:', error);

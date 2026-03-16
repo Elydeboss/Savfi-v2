@@ -1,8 +1,14 @@
 <script lang="ts">
-	import { User, Mail, Phone, ShieldCheck, Camera, Edit, Lock, Bell, CreditCard } from 'lucide-svelte';
+	import { User, Mail, Phone, ShieldCheck, Camera, Edit, Lock, Bell, CreditCard, Wallet, Copy } from 'lucide-svelte';
+	import { onMount } from 'svelte';
+	import { authService } from '$lib/services/auth.service';
+	import { savingsService } from '$lib/services/savings.service';
 
 	let isEditing = $state(false);
 	let showToast = $state(false);
+	let walletAddress = $state('');
+	let isConnectingWallet = $state(false);
+	let walletToast = $state<{ message: string; type: 'success' | 'error' } | null>(null);
 
 	let userProfile = $state({
 		firstName: 'John',
@@ -16,6 +22,30 @@
 		bvn: '12345678901',
 		kycVerified: false,
 		kycLevel: 'Not Verified'
+	});
+
+	onMount(async () => {
+		try {
+			const userData = authService.getUserData();
+			if (userData) {
+				userProfile = {
+					firstName: userData.username?.split(' ')[0] || 'John',
+					lastName: userData.username?.split(' ')[1] || 'Doe',
+					email: userData.email || 'john.doe@example.com',
+					phone: userData.phoneNumber || '+234 812 345 6789',
+					username: userData.username || 'johndoe',
+					dateOfBirth: userData.dateOfBirth || '1990-01-01',
+					address: 'Nigeria',
+					nin: '12345678901',
+					bvn: '12345678901',
+					kycVerified: userData.kycVerified || false,
+					kycLevel: userData.kycVerified ? 'Verified' : 'Not Verified'
+				};
+				walletAddress = userData.phantomWallet || '';
+			}
+		} catch (error) {
+			console.error('Failed to load user data:', error);
+		}
 	});
 
 	const kycLevels = [
@@ -36,6 +66,45 @@
 
 	const handleCancel = () => {
 		isEditing = false;
+	};
+
+	const handleConnectPhantom = async () => {
+		isConnectingWallet = true;
+		try {
+			if (!savingsService.isPhantomInstalled()) {
+				walletToast = { message: 'Please install Phantom wallet to continue', type: 'error' };
+				window.open('https://phantom.app/', '_blank');
+				return;
+			}
+
+			const phantomAddress = await savingsService.connectPhantom();
+			walletAddress = phantomAddress;
+			walletToast = { message: 'Phantom wallet connected successfully!', type: 'success' };
+
+			setTimeout(() => {
+				walletToast = null;
+			}, 3000);
+		} catch (error: any) {
+			console.error('Wallet connection error:', error);
+			walletToast = { message: error.message || 'Failed to connect wallet', type: 'error' };
+		} finally {
+			isConnectingWallet = false;
+		}
+	};
+
+	const copyWalletAddress = () => {
+		if (walletAddress) {
+			navigator.clipboard.writeText(walletAddress);
+			walletToast = { message: 'Wallet address copied!', type: 'success' };
+			setTimeout(() => {
+				walletToast = null;
+			}, 2000);
+		}
+	};
+
+	const formatAddress = (address: string) => {
+		if (!address) return '';
+		return `${address.slice(0, 6)}...${address.slice(-6)}`;
 	};
 </script>
 
@@ -195,6 +264,52 @@
 		{/if}
 	</div>
 
+	<!-- Wallet Information -->
+	<div class="bg-white rounded-2xl p-6 border border-gray-200 mb-6">
+		<h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+			<Wallet class="w-5 h-5 text-blue-500" />
+			Wallet Information
+		</h3>
+
+		{#if walletAddress}
+			<div class="bg-gray-50 rounded-xl p-4 mb-4">
+				<div class="flex items-center justify-between">
+					<div class="flex-1">
+						<p class="text-xs text-gray-600 mb-1">Your Wallet Address</p>
+						<p class="text-sm font-medium text-gray-900 break-all">{walletAddress}</p>
+					</div>
+					<button
+						onclick={copyWalletAddress}
+						class="ml-3 p-2 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer"
+						title="Copy address"
+					>
+						<Copy class="w-4 h-4 text-gray-600" />
+					</button>
+				</div>
+			</div>
+		{/if}
+
+		<div class="flex flex-col sm:flex-row gap-3">
+			<button
+				onclick={handleConnectPhantom}
+				disabled={isConnectingWallet}
+				class="flex-1 px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-xl font-semibold hover:from-purple-600 hover:to-purple-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center gap-2"
+			>
+				{#if isConnectingWallet}
+					<div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+					Connecting...
+				{:else}
+					<Wallet class="w-4 h-4" />
+					{walletAddress ? 'Reconnect Phantom Wallet' : 'Connect Phantom Wallet'}
+				{/if}
+			</button>
+		</div>
+
+		<p class="text-xs text-gray-500 mt-3">
+			Connect your Phantom wallet to make deposits and withdrawals on Solana
+		</p>
+	</div>
+
 	<!-- KYC Progress -->
 	<div class="bg-white rounded-2xl p-6 border border-gray-200 mb-6">
 		<h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
@@ -270,5 +385,16 @@
 {#if showToast}
 	<div class="fixed bottom-4 right-4 px-6 py-3 bg-green-500 text-white rounded-lg shadow-lg z-50 animate-fade-in">
 		Profile updated successfully!
+	</div>
+{/if}
+
+<!-- Wallet Toast -->
+{#if walletToast}
+	<div
+		class="fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg {walletToast.type === 'success'
+			? 'bg-green-500 text-white'
+			: 'bg-red-500 text-white'} z-50 animate-fade-in"
+	>
+		{walletToast.message}
 	</div>
 {/if}

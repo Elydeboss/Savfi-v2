@@ -28,8 +28,11 @@
 
 			try {
 				// Fetch user data
-				await authService.getCurrentUser();
-				authStore.login(token);
+				const { user } = await authService.getCurrentUser();
+
+				// Manually set the auth state for OAuth
+				authStore.setToken(token);
+				authStore.setUser(user as any);
 
 				// Redirect to dashboard
 				goto('/dashboard');

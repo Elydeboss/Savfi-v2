@@ -3,15 +3,6 @@
 	import { Eye, EyeOff } from 'lucide-svelte';
 	import { authService } from '$lib/services/auth.service';
 
-	// Type declaration for window.ethereum
- declare global {
-		interface Window {
-			ethereum?: {
-				request: (args: { method: string }) => Promise<string[]>;
-			};
-		}
-	}
-
 	let formData = $state({
 		email: '',
 		username: '',
@@ -94,9 +85,9 @@
 	const handleMetamaskSignup = async () => {
 		console.log('Metamask signup clicked');
 		// TODO: Implement Metamask wallet connection
-		if (typeof window.ethereum !== 'undefined') {
+		if (typeof (window as any).ethereum !== 'undefined') {
 			try {
-				const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+				const accounts = await (window as any).ethereum.request({ method: 'eth_requestAccounts' });
 				console.log('Connected account:', accounts[0]);
 				// Handle wallet connection
 			} catch (error) {
@@ -124,7 +115,7 @@
 				<img
 					src="/images/Frame-1.svg"
 					alt="Person using SavFi app"
-					class="w-full max-w-[600px] h-auto object-contain rounded-2xl"
+					class="w-full max-w-[400px] sm:max-w-[600px] h-auto object-contain rounded-2xl"
 				/>
 			</div>
 

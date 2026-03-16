@@ -51,11 +51,11 @@ class SavingsService {
 		try {
 			const response = await api.post<ApiResponse<BlockchainDepositResponse>>('/savings/create', request);
 
-			if (response.data.success && response.data.data) {
+			if (response.data?.success && response.data.data) {
 				return response.data.data;
 			}
 
-			throw new Error(response.data.error || 'Failed to create savings plan');
+			throw new Error(response.data?.error || 'Failed to create savings plan');
 		} catch (error: any) {
 			console.error('Create plan error:', error);
 			throw error;
@@ -125,8 +125,8 @@ class SavingsService {
 		try {
 			const response = await api.post(`/savings/${planId}/deposit/confirm`, { signature });
 
-			if (!response.data.success) {
-				throw new Error(response.data.error || 'Failed to confirm deposit');
+			if (!response.data?.success) {
+				throw new Error(response.data?.error || 'Failed to confirm deposit');
 			}
 		} catch (error: any) {
 			console.error('Confirm deposit error:', error);
@@ -145,7 +145,7 @@ class SavingsService {
 		const { signature } = await this.signAndSendDeposit(transaction.serialized);
 
 		// Step 3: Confirm with backend
-		await this.confirmDeposit(plan._id || plan.id, signature);
+		await this.confirmDeposit(plan._id, signature);
 
 		return plan;
 	}
@@ -156,7 +156,7 @@ class SavingsService {
 	async getUserPlans(): Promise<SavingsPlanResponse[]> {
 		try {
 			const response = await api.get<ApiResponse<SavingsPlanResponse[]>>('/savings');
-			if (response.data.success && response.data.data) {
+			if (response.data?.success && response.data.data) {
 				return response.data.data;
 			}
 			return [];
@@ -172,10 +172,10 @@ class SavingsService {
 	async addFunds(planId: string, amount: number): Promise<SavingsPlanResponse> {
 		try {
 			const response = await api.post<ApiResponse<SavingsPlanResponse>>(`/savings/${planId}/deposit`, { amount });
-			if (response.data.success && response.data.data) {
+			if (response.data?.success && response.data.data) {
 				return response.data.data;
 			}
-			throw new Error(response.data.error || 'Failed to add funds');
+			throw new Error(response.data?.error || 'Failed to add funds');
 		} catch (error: any) {
 			console.error('Add funds error:', error);
 			throw error;
@@ -188,10 +188,10 @@ class SavingsService {
 	async withdrawFunds(planId: string, amount: number): Promise<SavingsPlanResponse> {
 		try {
 			const response = await api.post<ApiResponse<SavingsPlanResponse>>(`/savings/${planId}/withdraw`, { amount });
-			if (response.data.success && response.data.data) {
+			if (response.data?.success && response.data.data) {
 				return response.data.data;
 			}
-			throw new Error(response.data.error || 'Failed to withdraw funds');
+			throw new Error(response.data?.error || 'Failed to withdraw funds');
 		} catch (error: any) {
 			console.error('Withdraw funds error:', error);
 			throw error;
@@ -212,7 +212,7 @@ class SavingsService {
 				totalInterest: number;
 				activePlans: number;
 			}>>('/savings/statistics');
-			if (response.data.success && response.data.data) {
+			if (response.data?.success && response.data.data) {
 				return response.data.data;
 			}
 			return { totalBalance: 0, totalInterest: 0, activePlans: 0 };
@@ -241,7 +241,7 @@ class SavingsService {
 				swiftfi: number;
 			}>>('/savings/apy');
 
-			if (response.data.success && response.data.data) {
+			if (response.data?.success && response.data.data) {
 				return response.data.data;
 			}
 

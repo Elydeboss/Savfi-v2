@@ -33,7 +33,7 @@
 			</a>
 
 			<!-- Desktop Navigation -->
-			<div class="hidden lg:flex items-center space-x-6 xl:space-x-8">
+			<div class="hidden md:flex items-center space-x-4 lg:space-x-6 xl:space-x-8">
 				{#each navLinks as link}
 					<a
 						href={link.href}
@@ -82,7 +82,7 @@
 					{#each navLinks as link}
 						<a
 							href={link.href}
-							class="font-medium transition-colors py-3 px-2 rounded-lg {isActive(link.href)
+							class="font-medium transition-colors py-4 px-4 rounded-xl {isActive(link.href)
 								? 'text-blue-500 bg-blue-50 dark:bg-blue-900/20'
 								: 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'}"
 							onclick={() => isMenuOpen = false}
@@ -92,12 +92,12 @@
 					{/each}
 					<div class="flex flex-col space-y-3 pt-4 mt-2 border-t border-gray-200 dark:border-gray-700">
 						<a href="/login" class="w-full">
-							<button class="w-full text-left py-3 px-2 text-gray-700 dark:text-gray-300 font-semibold hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors cursor-pointer">
+							<button class="w-full text-left py-4 px-4 text-gray-700 dark:text-gray-300 font-semibold hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors cursor-pointer">
 								Sign In
 							</button>
 						</a>
 						<a href="/signup" class="w-full">
-							<button class="w-full py-3 px-4 font-semibold cursor-pointer rounded-xl text-white bg-blue-500 hover:bg-blue-600 transition-colors">
+							<button class="w-full py-4 px-4 font-semibold cursor-pointer rounded-xl text-white bg-blue-500 hover:bg-blue-600 transition-colors">
 								Get Started
 							</button>
 						</a>

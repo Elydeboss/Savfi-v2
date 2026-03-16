@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { ArrowRight } from 'lucide-svelte';
-	import { savingsService } from '../services/savings.service';
+	import { savingsService } from '$lib/services/savings.service';
 
 	type PlanType = 'FlexFi' | 'GrowFi' | 'VaultFi' | 'SwiftFi';
 	type CardColor = 'blue' | 'green' | 'purple' | 'orange';
@@ -143,7 +143,7 @@
 		withdrawAmount = 0;
 	};
 
-	const circumference = 2 * Math.PI * 20;
+	const circumference = 2 * Math.PI * 24;
 	const dashOffset = circumference * (1 - (progress || 0) / 100);
 </script>
 
@@ -155,21 +155,21 @@
 				{interest}
 			</span>
 		</div>
-		<div class="relative w-12 h-12">
-			<svg class="transform -rotate-90 w-12 h-12">
+		<div class="relative w-14 h-14 sm:w-12 sm:h-12">
+			<svg class="transform -rotate-90 w-14 h-14 sm:w-12 sm:h-12">
 				<circle
-					cx="24"
-					cy="24"
-					r="20"
+					cx="28"
+					cy="28"
+					r="24"
 					stroke="currentColor"
 					stroke-width="4"
 					fill="none"
 					class="text-neutral-200 dark:text-gray-700"
 				/>
 				<circle
-					cx="24"
-					cy="24"
-					r="20"
+					cx="28"
+					cy="28"
+					r="24"
 					stroke="currentColor"
 					stroke-width="4"
 					fill="none"
@@ -229,7 +229,7 @@
 <!-- Withdraw Modal -->
 {#if showWithdrawModal}
 	<div
-		class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+		class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 sm:p-6"
 		onclick={closeWithdrawModal}
 	>
 		<div

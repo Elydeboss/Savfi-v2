@@ -56,7 +56,7 @@
 			</p>
 		</div>
 
-		<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
 			{#each testimonials as testimonial, index}
 				<div
 					class="bg-card rounded-2xl p-8 border border-border hover:shadow-lg transition-all duration-300 animate-slide-up"

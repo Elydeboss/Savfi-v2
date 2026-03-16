@@ -51,22 +51,31 @@ class AuthService {
 
 	async login(data: LoginRequest): Promise<AuthResponse> {
 		const response = await apiService.post<AuthResponse>('/auth/login', data);
-		this.setToken(response.token);
-		this.setUserData(response.user);
-		return response;
+		if (response.data) {
+			this.setToken(response.data.token);
+			this.setUserData(response.data.user);
+			return response.data;
+		}
+		throw new Error(response.error || 'Login failed');
 	}
 
 	async register(data: RegisterRequest): Promise<AuthResponse> {
 		const response = await apiService.post<AuthResponse>('/auth/register', data);
-		this.setToken(response.token);
-		this.setUserData(response.user);
-		return response;
+		if (response.data) {
+			this.setToken(response.data.token);
+			this.setUserData(response.data.user);
+			return response.data;
+		}
+		throw new Error(response.error || 'Registration failed');
 	}
 
 	async getCurrentUser(): Promise<{ user: User }> {
 		const response = await apiService.get<{ user: User }>('/auth/me');
-		this.setUserData(response.user);
-		return response;
+		if (response.data) {
+			this.setUserData(response.data.user);
+			return response.data;
+		}
+		throw new Error(response.error || 'Failed to get user');
 	}
 
 	async updateProfile(data: {
@@ -76,17 +85,26 @@ class AuthService {
 		profilePicture?: string;
 	}): Promise<{ message: string; user: Partial<User> }> {
 		const response = await apiService.put<{ message: string; user: Partial<User> }>('/auth/profile', data);
-		return response;
+		if (response.data) {
+			return response.data;
+		}
+		throw new Error(response.error || 'Failed to update profile');
 	}
 
 	async changePassword(data: { currentPassword: string; newPassword: string }): Promise<{ message: string }> {
 		const response = await apiService.post<{ message: string }>('/auth/change-password', data);
-		return response;
+		if (response.data?.message) {
+			return { message: response.data.message };
+		}
+		throw new Error(response.error || 'Failed to change password');
 	}
 
 	async connectWallet(walletAddress: string): Promise<{ message: string; walletAddress: string }> {
 		const response = await apiService.post<{ message: string; walletAddress: string }>('/auth/connect-wallet', { walletAddress });
-		return response;
+		if (response.data) {
+			return response.data;
+		}
+		throw new Error(response.error || 'Failed to connect wallet');
 	}
 
 	// OAuth Methods
