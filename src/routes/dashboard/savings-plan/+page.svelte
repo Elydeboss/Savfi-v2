@@ -143,6 +143,13 @@
 		isProcessingDeposit = true;
 
 		try {
+			// Check if Phantom wallet is installed
+			if (!savingsService.isPhantomInstalled()) {
+				showToast('Please install Phantom wallet to continue', 'error');
+				window.open('https://phantom.app/', '_blank');
+				return;
+			}
+
 			// Map frontend plan names to backend plan types
 			const planTypeMap: Record<PlanType, 'vaultfi' | 'growfi' | 'flexifi' | 'swiftfi'> = {
 				VaultFi: 'vaultfi',
@@ -151,8 +158,11 @@
 				SwiftFi: 'swiftfi'
 			};
 
-			// Call backend API to create savings plan
-			await savingsService.createPlan({
+			// Update processing message
+			toastMessage = { message: 'Connecting to Phantom wallet...', type: 'success' };
+
+			// Use complete deposit flow (blockchain + backend)
+			await savingsService.completeDeposit({
 				planType: planTypeMap[selectedPlan.name],
 				amount: depositAmount
 			});
@@ -163,12 +173,20 @@
 			// Redirect to dashboard to see the updated plan
 			setTimeout(() => {
 				goto('/dashboard');
-			}, 1000);
+			}, 1500);
 
 		} catch (error: any) {
 			console.error('Deposit error:', error);
-			const errorMessage = error.response?.data?.error || error.message || 'Failed to complete deposit. Please try again.';
-			showToast(errorMessage, 'error');
+
+			// Handle specific Phantom wallet errors
+			if (error.message?.includes('User rejected')) {
+				showToast('Transaction cancelled by user', 'error');
+			} else if (error.message?.includes('Insufficient funds')) {
+				showToast('Insufficient USDC balance in your wallet', 'error');
+			} else {
+				const errorMessage = error.response?.data?.error || error.message || 'Failed to complete deposit. Please try again.';
+				showToast(errorMessage, 'error');
+			}
 		} finally {
 			isProcessingDeposit = false;
 		}

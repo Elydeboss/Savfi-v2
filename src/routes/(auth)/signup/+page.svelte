@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { Eye, EyeOff } from 'lucide-svelte';
 	import { authService } from '$lib/services/auth.service';
 
 	// Type declaration for window.ethereum
@@ -22,6 +23,8 @@
 	let isLoading = $state(false);
 	let error = $state('');
 	let success = $state(false);
+	let showPassword = $state(false);
+	let showConfirmPassword = $state(false);
 
 	const validateEmail = (email: string) => {
 		return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -214,15 +217,29 @@
 						<label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
 							Password
 						</label>
-						<input
-							type="password"
-							id="password"
-							bind:value={formData.password}
-							placeholder="Create a password"
-							required
-							disabled={isLoading}
-							class="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
-						/>
+						<div class="relative">
+							<input
+								type={showPassword ? 'text' : 'password'}
+								id="password"
+								bind:value={formData.password}
+								placeholder="Create a password"
+								required
+								disabled={isLoading}
+								class="w-full px-3 sm:px-4 py-2.5 sm:py-3 pr-10 sm:pr-12 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+							/>
+							<button
+								type="button"
+								onclick={() => showPassword = !showPassword}
+								disabled={isLoading}
+								class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors disabled:opacity-50 cursor-pointer"
+							>
+								{#if showPassword}
+									<EyeOff class="w-5 h-5" />
+								{:else}
+									<Eye class="w-5 h-5" />
+								{/if}
+							</button>
+						</div>
 						<p class="text-xs text-gray-500 dark:text-gray-400 mt-1">8+ chars with uppercase, lowercase & number</p>
 					</div>
 
@@ -231,15 +248,29 @@
 						<label for="confirmPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
 							Confirm Password
 						</label>
-						<input
-							type="password"
-							id="confirmPassword"
-							bind:value={formData.confirmPassword}
-							placeholder="Confirm your password"
-							required
-							disabled={isLoading}
-							class="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
-						/>
+						<div class="relative">
+							<input
+								type={showConfirmPassword ? 'text' : 'password'}
+								id="confirmPassword"
+								bind:value={formData.confirmPassword}
+								placeholder="Confirm your password"
+								required
+								disabled={isLoading}
+								class="w-full px-3 sm:px-4 py-2.5 sm:py-3 pr-10 sm:pr-12 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+							/>
+							<button
+								type="button"
+								onclick={() => showConfirmPassword = !showConfirmPassword}
+								disabled={isLoading}
+								class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors disabled:opacity-50 cursor-pointer"
+							>
+								{#if showConfirmPassword}
+									<EyeOff class="w-5 h-5" />
+								{:else}
+									<Eye class="w-5 h-5" />
+								{/if}
+							</button>
+						</div>
 					</div>
 
 					<!-- Referral Code Input -->

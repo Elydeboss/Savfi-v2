@@ -11,6 +11,7 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { authService } from '$lib/services/auth.service';
+	import { savingsService } from '$lib/services/savings.service';
 	import SavingsPlanCard from '$lib/components/dashboard/SavingsPlanCard.svelte';
 	import TransactionsTable from '$lib/components/dashboard/TransactionsTable.svelte';
 
@@ -18,16 +19,20 @@
 	type TxStatus = 'Success' | 'Pending' | 'Failed';
 
 	interface DisplayPlan {
+		id: string;
 		type: PlanType;
 		duration?: string;
 		interest: string;
+		apy: number;
 		balance: number;
-		principal?: number;
-		interestEarned?: number;
+		principal: number;
+		interestEarned: number;
 		maturityDate?: string;
 		progress?: number;
 		isActive: boolean;
 		status?: 'Active' | 'Emergency only';
+		minDeposit: number;
+		lockPeriod: number;
 	}
 
 	interface Transaction {
@@ -38,18 +43,18 @@
 		source: string;
 	}
 
-	const PLAN_CONFIGS = {
-		FlexFi: { duration: '4 months plan', interestDisplay: '+2% interest' },
-		GrowFi: { duration: '6 months plan', interestDisplay: '+4% interest' },
-		VaultFi: { duration: '1 year plan', interestDisplay: '+8% interest' },
-		SwiftFi: { duration: '', interestDisplay: '+0% interest' }
+	const PLAN_CONFIGS: Record<string, { duration: string; interestDisplay: string; apy: number; minDeposit: number; lockPeriod: number; color: 'blue' | 'green' | 'purple' | 'orange' }> = {
+		vaultfi: { duration: '1 year plan', interestDisplay: '+8% interest', apy: 8, minDeposit: 100, lockPeriod: 365, color: 'purple' },
+		growfi: { duration: '6 months plan', interestDisplay: '+4% interest', apy: 4, minDeposit: 50, lockPeriod: 180, color: 'green' },
+		flexifi: { duration: '4 months plan', interestDisplay: '+2% interest', apy: 2, minDeposit: 25, lockPeriod: 120, color: 'blue' },
+		swiftfi: { duration: 'No lock', interestDisplay: '+0% interest', apy: 0, minDeposit: 10, lockPeriod: 0, color: 'orange' }
 	};
 
-	const COLOR_BY_PLAN: Record<PlanType, 'blue' | 'green' | 'purple' | 'orange'> = {
-		FlexFi: 'blue',
-		GrowFi: 'green',
-		VaultFi: 'purple',
-		SwiftFi: 'orange'
+	const COLOR_BY_PLAN: Record<string, 'blue' | 'green' | 'purple' | 'orange'> = {
+		flexifi: 'blue',
+		growfi: 'green',
+		vaultfi: 'purple',
+		swiftfi: 'orange'
 	};
 
 	let showBalance = $state(true);
@@ -58,6 +63,8 @@
 	let toast = $state<{ message: string; type: 'success' | 'error' } | null>(null);
 	let displayPlans = $state<DisplayPlan[]>([]);
 	let totalBalance = $state(0);
+	let totalInterest = $state(0);
+	let activePlansCount = $state(0);
 	let isLoadingData = $state(true);
 
 	let userName = $state('User');
@@ -86,51 +93,77 @@
 				userName = cachedUser.username || 'User';
 				walletAddress = cachedUser.phantomWallet || '';
 				kycVerified = cachedUser.kycVerified || false;
-				toast = { message: 'Using cached user data', type: 'success' };
-			} else {
-				toast = { message: 'Failed to load user data', type: 'error' };
 			}
+		}
+
+		// Load savings plans from API
+		await loadSavingsPlans();
+	});
+
+	async function loadSavingsPlans() {
+		try {
+			const plans = await savingsService.getUserPlans();
+			const stats = await savingsService.getStatistics();
+
+			// Map backend plan types to frontend display types
+			const planTypeMap: Record<string, PlanType> = {
+				vaultfi: 'VaultFi',
+				growfi: 'GrowFi',
+				flexifi: 'FlexFi',
+				swiftfi: 'SwiftFi'
+			};
+
+			// Transform backend data to display format
+			displayPlans = plans.map(plan => {
+				const planType = planTypeMap[plan.planType] || 'SwiftFi';
+				const config = PLAN_CONFIGS[plan.planType];
+
+				const maturityDate = plan.endDate
+					? new Date(plan.endDate).toLocaleDateString('en-US', {
+							year: 'numeric',
+							month: 'short',
+							day: 'numeric'
+						})
+					: undefined;
+
+				return {
+					id: plan._id,
+					type: planType,
+					duration: config.duration,
+					interest: config.interestDisplay,
+					apy: plan.apy,
+					balance: plan.currentBalance,
+					principal: plan.depositAmount,
+					interestEarned: plan.interestEarned,
+					maturityDate,
+					isActive: plan.status === 'active',
+					status: 'Active',
+					minDeposit: config.minDeposit,
+					lockPeriod: plan.lockPeriod
+				};
+			});
+
+			// Update totals from statistics
+			totalBalance = stats.totalBalance;
+			totalInterest = stats.totalInterest;
+			activePlansCount = stats.activePlans;
+
+		} catch (error) {
+			console.error('Failed to load savings plans:', error);
+			toast = { message: 'Failed to load savings plans', type: 'error' };
 		} finally {
 			isLoadingData = false;
 		}
-
-		// TODO: Load savings plans from API
-		initializeDisplayPlans();
-	});
+	}
 
 	function initializeDisplayPlans() {
-		const plans: DisplayPlan[] = [
-			{
-				type: 'FlexFi',
-				duration: PLAN_CONFIGS.FlexFi.duration,
-				interest: PLAN_CONFIGS.FlexFi.interestDisplay,
-				balance: 0,
-				isActive: false
-			},
-			{
-				type: 'GrowFi',
-				duration: PLAN_CONFIGS.GrowFi.duration,
-				interest: PLAN_CONFIGS.GrowFi.interestDisplay,
-				balance: 0,
-				isActive: false
-			},
-			{
-				type: 'VaultFi',
-				duration: PLAN_CONFIGS.VaultFi.duration,
-				interest: PLAN_CONFIGS.VaultFi.interestDisplay,
-				balance: 0,
-				isActive: false
-			},
-			{
-				type: 'SwiftFi',
-				interest: PLAN_CONFIGS.SwiftFi.interestDisplay,
-				balance: 0,
-				isActive: false
-			}
-		];
+		// This function is no longer needed - we use real API data
+		// Kept for backwards compatibility during transition
+	}
 
-		displayPlans = plans;
-		totalBalance = 0;
+	async function refreshData() {
+		isLoadingData = true;
+		await loadSavingsPlans();
 	}
 
 	const mapStatusToCardStatus = (
@@ -143,6 +176,7 @@
 
 	const toSavingPlanCardProps = (p: DisplayPlan) => {
 		return {
+			id: p.id || '',
 			name: p.type,
 			interest: p.interest,
 			color: COLOR_BY_PLAN[p.type],
@@ -151,8 +185,17 @@
 			principal: p.principal ?? 0,
 			interestAmount: p.interestEarned ?? 0,
 			maturity: p.maturityDate ?? '—',
-			status: mapStatusToCardStatus(p)
+			status: mapStatusToCardStatus(p),
+			minDeposit: p.minDeposit,
+			lockPeriod: p.lockPeriod,
+			onDeposit: handleDeposit,
+			onRefresh: refreshData
 		};
+	};
+
+	const handleDeposit = (planId: string) => {
+		// Navigate to savings plan page for deposit
+		goto('/dashboard/savings-plan');
 	};
 
 	const copyToClipboard = (text: string) => {

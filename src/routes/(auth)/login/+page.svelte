@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { ArrowLeft } from 'lucide-svelte';
+	import { ArrowLeft, Eye, EyeOff } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { authService } from '$lib/services/auth.service';
@@ -14,6 +14,7 @@
 	let isLoading = $state(false);
 	let error = $state('');
 	let redirectUrl = $state('/dashboard');
+	let showPassword = $state(false);
 
 	onMount(() => {
 		// Get redirect parameter from URL query string
@@ -132,16 +133,30 @@
 					<label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
 						Password
 					</label>
-					<input
-						id="password"
-						type="password"
-						bind:value={formData.password}
-						placeholder="••••••••"
-						required
-						disabled={isLoading}
-						autocomplete="current-password"
-						class="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-50 text-sm"
-					/>
+					<div class="relative">
+						<input
+							id="password"
+							type={showPassword ? 'text' : 'password'}
+							bind:value={formData.password}
+							placeholder="••••••••"
+							required
+							disabled={isLoading}
+							autocomplete="current-password"
+							class="w-full px-3 sm:px-4 py-2.5 sm:py-3 pr-10 sm:pr-12 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-50 text-sm"
+						/>
+						<button
+							type="button"
+							onclick={() => showPassword = !showPassword}
+							disabled={isLoading}
+							class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors disabled:opacity-50 cursor-pointer"
+						>
+							{#if showPassword}
+								<EyeOff class="w-5 h-5" />
+							{:else}
+								<Eye class="w-5 h-5" />
+							{/if}
+						</button>
+					</div>
 				</div>
 
 				<!-- Remember Me & Forgot Password -->
