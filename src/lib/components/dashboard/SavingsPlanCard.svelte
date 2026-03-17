@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { ArrowRight } from 'lucide-svelte';
 	import { savingsService } from '$lib/services/savings.service';
 
 	type PlanType = 'FlexFi' | 'GrowFi' | 'VaultFi' | 'SwiftFi';
@@ -15,7 +14,7 @@
 		available: number;
 		principal: number;
 		interestAmount: number;
-		maturity?: string;
+		maturity?: string | null;
 		status: CardStatus;
 		minDeposit?: number;
 		lockPeriod?: number;
@@ -95,12 +94,18 @@
 	};
 
 	const handleClick = () => {
-		if (onDeposit && id) {
+		if (onDeposit && id?.trim()) {
 			onDeposit(id);
 		}
 	};
 
 	const handleWithdraw = async () => {
+		// Validate plan ID
+		if (!id?.trim()) {
+			showToast('Invalid plan ID', 'error');
+			return;
+		}
+
 		// Validate amount
 		if (withdrawAmount <= 0) {
 			showToast('Please enter a valid amount', 'error');
@@ -201,11 +206,13 @@
 			</p>
 		</div>
 
-		<div>
-			<p class="text-xs text-gray-600 dark:text-gray-400">
-				Matures: <span class="font-medium text-gray-900 dark:text-white">{maturity}</span>
-			</p>
-		</div>
+		{#if maturity}
+			<div>
+				<p class="text-xs text-gray-600 dark:text-gray-400">
+					Matures: <span class="font-medium text-gray-900 dark:text-white">{maturity}</span>
+				</p>
+			</div>
+		{/if}
 	</div>
 
 	<div class="flex gap-2">
@@ -218,7 +225,7 @@
 		{#if status === 'running' && available > 0}
 			<button
 				onclick={openWithdrawModal}
-				class="px-4 py-2 text-sm border-2 {colors.borderColor} {colors.text} rounded-full cursor-pointer font-semibold hover:bg-opacity-10 transition-colors"
+				class="px-4 py-2 text-sm border-2 {colors.borderColor} {colors.text} rounded-full cursor-pointer font-semibold hover:bg-white/10 dark:hover:bg-gray-700/50 transition-colors"
 			>
 				Withdraw
 			</button>

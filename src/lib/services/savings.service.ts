@@ -171,7 +171,7 @@ class SavingsService {
 	 */
 	async addFunds(planId: string, amount: number): Promise<SavingsPlanResponse> {
 		try {
-			const response = await api.post<ApiResponse<SavingsPlanResponse>>(`/savings/${planId}/deposit`, { amount });
+			const response = await api.post<ApiResponse<SavingsPlanResponse>>(`/api/savings/plans/${planId}/deposit`, { amount });
 			if (response.data?.success && response.data.data) {
 				return response.data.data;
 			}
@@ -187,7 +187,7 @@ class SavingsService {
 	 */
 	async withdrawFunds(planId: string, amount: number): Promise<SavingsPlanResponse> {
 		try {
-			const response = await api.post<ApiResponse<SavingsPlanResponse>>(`/savings/${planId}/withdraw`, { amount });
+			const response = await api.post<ApiResponse<SavingsPlanResponse>>(`/api/savings/plans/${planId}/withdraw`, { amount });
 			if (response.data?.success && response.data.data) {
 				return response.data.data;
 			}

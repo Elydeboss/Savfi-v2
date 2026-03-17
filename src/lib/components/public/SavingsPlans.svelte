@@ -90,7 +90,7 @@
 		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
 			{#each vaults as vault}
 				<div
-					class="bg-card rounded-2xl p-6 border border-border hover:shadow-lg transition-all duration-300 animate-slide-up"
+					class="bg-card rounded-2xl px-6 pt-6 pb-6 border border-border hover:shadow-lg transition-all duration-300 animate-slide-up flex flex-col h-full"
 				>
 					<div
 						class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 {colorClasses[vault.color].accent}"
@@ -113,7 +113,7 @@
 						{/each}
 					</div>
 
-					<div class="space-y-4">
+					<div class="space-y-4 flex-grow">
 						<div>
 							<p class="text-xs text-muted-foreground mb-1">Minimum Deposit</p>
 							<p class="text-lg font-bold text-foreground">
@@ -130,7 +130,7 @@
 
 					<a
 						href="/savings/vaultfi/create"
-						class="flex items-center justify-center gap-2 w-full py-3 rounded-xl font-semibold transition-colors cursor-pointer {colorClasses[vault.color].button} text-white"
+						class="flex items-center justify-center gap-2 mt-auto w-full py-3 rounded-xl font-semibold transition-colors cursor-pointer {colorClasses[vault.color].button} text-white"
 					>
 						Get Started
 						<ArrowRight class="w-5 h-5" />
