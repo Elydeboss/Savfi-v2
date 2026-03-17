@@ -161,7 +161,7 @@
 		</div>
 	</section>
 
-	<!-- Team Section -->
+<!-- Team Section 
 	<section class="py-20 px-6 max-w-4xl mx-auto">
 		<h2 class="text-3xl md:text-6xl font-bold text-center text-blue-500 mb-16">
 			The right talents, the perfect team.
@@ -170,7 +170,7 @@
 		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16 justify-items-center">
 			{#each team as member}
 				<div class="flex flex-col items-center text-center w-full max-w-xs">
-					<!-- Circle Image Container with Gradient Border Effect -->
+					 Circle Image Container with Gradient Border Effect 
 					<div class="relative p-1 rounded-full bg-gradient-to-tr from-blue-400 to-blue-200 mb-6">
 						<div class="p-1 bg-white rounded-full">
 							<img
@@ -187,6 +187,8 @@
 			{/each}
 		</div>
 	</section>
+-->
+	
 
 	<!-- Newsletter Section -->
 	<section class="bg-blue-500 py-12 px-6">
