@@ -30,6 +30,7 @@
 		"@solana/wallet-adapter-phantom": "^0.9.28",
 		"@solana/wallet-adapter-wallets": "^0.19.37",
 		"@solana/web3.js": "^1.98.4",
+		"@sveltejs/adapter-vercel": "^6.3.3",
 		"axios": "^1.13.6",
 		"clsx": "^2.1.1",
 		"decimal.js": "^10.6.0",
