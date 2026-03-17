@@ -43,6 +43,13 @@ export default {
       },
       borderRadius: {
         DEFAULT: '0.75rem'
+      },
+      boxShadow: {
+        'dark': '0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3)',
+        'dark-lg': '0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3)',
+        'glow-blue': '0 0 20px rgba(88, 166, 255, 0.25)',
+        'glow-green': '0 0 20px rgba(63, 185, 80, 0.25)',
+        'glow-purple': '0 0 20px rgba(188, 140, 255, 0.25)'
       }
     }
   },

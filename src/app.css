@@ -156,18 +156,18 @@ body {
 }
 
 [data-theme="dark"] {
-  --color-background: #0f1419;
-  --color-card: #1c2128;
+  --color-background: #14181f;
+  --color-card: #222831;
   --color-card-foreground: #f0f6fc;
   --color-foreground: #f0f6fc;
-  --color-muted-foreground: #8b949e;
-  --color-border: #30363d;
-  --color-input: #30363d;
-  --color-secondary: #161b22;
+  --color-muted-foreground: #a0aab8;
+  --color-border: #3a4149;
+  --color-input: #3a4149;
+  --color-secondary: #1c222b;
   --color-secondary-foreground: #f0f6fc;
-  --color-muted: #161b22;
-  --color-light: #0f1419;
-  --color-ring: #58a6ff;
+  --color-muted: #1a2029;
+  --color-light: #14181f;
+  --color-ring: #4da6ff;
   --color-blue-50: #1c2128;
   --color-blue-100: #161b22;
   --color-blue-200: #30363d;
@@ -208,27 +208,33 @@ body {
   --color-orange-700: #7c4a00;
   --color-orange-800: #9a6700;
   --color-orange-900: #7c4a00;
+
+  /* Dark mode color tints for cards */
+  --color-blue-tint: #1a2535;
+  --color-green-tint: #1a2d25;
+  --color-purple-tint: #251d35;
+  --color-orange-tint: #2d251a;
 }
 
 /* Dark mode page background */
 body[data-theme="dark"] {
-  background-color: #0f1419;
+  background-color: #14181f;
 }
 
 [data-theme="dark"] .bg-gray-50 {
-  background-color: #161b22;
+  background-color: #1a2029;
 }
 
 [data-theme="dark"] .bg-gray-100 {
-  background-color: #21262d;
+  background-color: #222831;
 }
 
 [data-theme="dark"] .bg-gray-200 {
-  background-color: #30363d;
+  background-color: #3a4149;
 }
 
 [data-theme="dark"] .bg-white {
-  background-color: #1c2128;
+  background-color: #222831;
 }
 
 [data-theme="dark"] .text-gray-50 {

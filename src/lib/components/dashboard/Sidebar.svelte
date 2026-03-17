@@ -47,7 +47,7 @@
 	class="fixed top-0 left-0 w-64 md:w-72 h-full max-w-[20vw] font-medium transform z-50 transition-transform duration-300 {isSidebarOpen
 		? 'translate-x-0'
 		: '-translate-x-full'} md:translate-x-0 {$isDarkMode
-		? 'bg-[#0D1B2A] text-white'
+		? 'bg-gradient-to-b from-[#1c222b] to-[#14181f] text-white'
 		: 'bg-white text-gray-900 border-r border-gray-200'} p-6 md:p-8"
 >
 	<!-- Logo -->

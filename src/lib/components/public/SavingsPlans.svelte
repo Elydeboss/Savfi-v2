@@ -47,31 +47,46 @@
 			text: string;
 			button: string;
 			accent: string;
+			darkBg?: string;
+			darkText?: string;
+			darkAccent?: string;
 		}
 	> = {
 		purple: {
 			bg: 'bg-[#F8F5FF]',
 			text: 'text-[#7146E8]',
 			button: 'bg-[#7146E8] hover:bg-[#5c3db8]',
-			accent: 'bg-[#D6EBFF]'
+			accent: 'bg-[#D6EBFF]',
+			darkBg: 'dark:bg-[#251d35]',
+			darkText: 'dark:text-[#bc8cff]',
+			darkAccent: 'dark:bg-[#1a1430]'
 		},
 		green: {
 			bg: 'bg-[#F7FFFB]',
 			text: 'text-success',
 			button: 'bg-success hover:bg-success/90',
-			accent: 'bg-[#D1FAD6]'
+			accent: 'bg-[#D1FAD6]',
+			darkBg: 'dark:bg-[#1a2d25]',
+			darkText: 'dark:text-[#3fb950]',
+			darkAccent: 'dark:bg-[#142018]'
 		},
 		blue: {
 			bg: 'bg-[#F2F8FE]',
 			text: 'text-blue-500',
 			button: 'bg-blue-500 hover:bg-blue-500/90',
-			accent: 'bg-[#D6EBFF]'
+			accent: 'bg-[#D6EBFF]',
+			darkBg: 'dark:bg-[#1a2535]',
+			darkText: 'dark:text-[#58a6ff]',
+			darkAccent: 'dark:bg-[#141c29]'
 		},
 		orange: {
 			bg: 'bg-[#FFFDFB]',
 			text: 'text-[#E89E50]',
 			button: 'bg-[#E89E50] hover:bg-[#d48840]',
-			accent: 'bg-[#FFEFD0]'
+			accent: 'bg-[#FFEFD0]',
+			darkBg: 'dark:bg-[#2d251a]',
+			darkText: 'dark:text-[#e3b341]',
+			darkAccent: 'dark:bg-[#1f1a12]'
 		}
 	};
 </script>
@@ -90,10 +105,10 @@
 		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
 			{#each vaults as vault}
 				<div
-					class="bg-card rounded-2xl px-6 pt-6 pb-6 border border-border hover:shadow-lg transition-all duration-300 animate-slide-up flex flex-col h-full"
+					class="bg-card {colorClasses[vault.color].darkBg} rounded-2xl px-6 pt-6 pb-6 border border-border hover:shadow-lg transition-all duration-300 animate-slide-up flex flex-col h-full"
 				>
 					<div
-						class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 {colorClasses[vault.color].accent}"
+						class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 {colorClasses[vault.color].accent} {colorClasses[vault.color].darkAccent}"
 					>
 						<span class="text-2xl font-bold {colorClasses[vault.color].text}">
 							{vault.apy}%
