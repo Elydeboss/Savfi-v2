@@ -60,13 +60,18 @@ class AuthService {
 	}
 
 	async register(data: RegisterRequest): Promise<AuthResponse> {
-		const response = await apiService.post<AuthResponse>('/auth/register', data);
-		if (response.data) {
-			this.setToken(response.data.token);
-			this.setUserData(response.data.user);
-			return response.data;
+		try {
+			const response = await apiService.post<AuthResponse>('/auth/register', data);
+			if (response.data) {
+				this.setToken(response.data.token);
+				this.setUserData(response.data.user);
+				return response.data;
+			}
+			throw new Error(response.error || 'Registration failed');
+		} catch (err: any) {
+			// Pass through the axios error with response.data for proper error handling
+			throw err;
 		}
-		throw new Error(response.error || 'Registration failed');
 	}
 
 	async getCurrentUser(): Promise<{ user: User }> {

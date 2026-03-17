@@ -17,6 +17,11 @@
 	let showPassword = $state(false);
 	let showConfirmPassword = $state(false);
 
+	// Field-specific errors
+	let emailError = $state('');
+	let usernameError = $state('');
+	let passwordError = $state('');
+
 	const validateEmail = (email: string) => {
 		return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 	};
@@ -72,11 +77,28 @@
 				goto('/dashboard');
 			}, 1000);
 		} catch (err: any) {
-			error = err.response?.data?.error || err.message || 'An error occurred during registration';
+			const errorMsg = err.response?.data?.error || err.message || 'An error occurred during registration';
+			const field = err.response?.data?.field;
+
+			// Check for password-related validation errors
+			if (errorMsg.toLowerCase().includes('password')) {
+				passwordError = errorMsg;
+			} else if (field === 'email') {
+				emailError = errorMsg;
+			} else if (field === 'username') {
+				usernameError = errorMsg;
+			} else {
+				error = errorMsg;
+			}
 		} finally {
 			isLoading = false;
 		}
 	};
+
+	// Clear field errors when user types
+	const clearEmailError = () => { emailError = ''; };
+	const clearUsernameError = () => { usernameError = ''; };
+	const clearPasswordError = () => { passwordError = ''; };
 
 	const handleGoogleSignup = () => {
 		authService.loginWithGoogle();
@@ -136,6 +158,24 @@
 					</div>
 				{/if}
 
+				{#if emailError}
+					<div class="mb-4 p-3 sm:p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+						<p class="text-sm text-red-600 dark:text-red-400">{emailError}</p>
+					</div>
+				{/if}
+
+				{#if usernameError}
+					<div class="mb-4 p-3 sm:p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+						<p class="text-sm text-red-600 dark:text-red-400">{usernameError}</p>
+					</div>
+				{/if}
+
+				{#if passwordError}
+					<div class="mb-4 p-3 sm:p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+						<p class="text-sm text-red-600 dark:text-red-400">{passwordError}</p>
+					</div>
+				{/if}
+
 				{#if success}
 					<div class="mb-4 p-3 sm:p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
 						<p class="text-sm text-green-600 dark:text-green-400">
@@ -180,11 +220,15 @@
 							type="email"
 							id="email"
 							bind:value={formData.email}
+							oninput={clearEmailError}
 							placeholder="Enter email address"
 							required
 							disabled={isLoading}
-							class="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+							class="w-full px-3 sm:px-4 py-2.5 sm:py-3 border {emailError ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'} rounded-lg focus:outline-none focus:ring-2 focus:border-transparent disabled:opacity-50 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
 						/>
+						{#if emailError}
+							<p class="text-xs text-red-500 mt-1">{emailError}</p>
+						{/if}
 					</div>
 
 					<!-- Username Input -->
@@ -196,11 +240,15 @@
 							type="text"
 							id="username"
 							bind:value={formData.username}
+							oninput={clearUsernameError}
 							placeholder="Choose a username"
 							required
 							disabled={isLoading}
-							class="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+							class="w-full px-3 sm:px-4 py-2.5 sm:py-3 border {usernameError ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'} rounded-lg focus:outline-none focus:ring-2 focus:border-transparent disabled:opacity-50 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
 						/>
+						{#if usernameError}
+							<p class="text-xs text-red-500 mt-1">{usernameError}</p>
+						{/if}
 					</div>
 
 					<!-- Password Input -->
@@ -213,10 +261,11 @@
 								type={showPassword ? 'text' : 'password'}
 								id="password"
 								bind:value={formData.password}
+								oninput={clearPasswordError}
 								placeholder="Create a password"
 								required
 								disabled={isLoading}
-								class="w-full px-3 sm:px-4 py-2.5 sm:py-3 pr-10 sm:pr-12 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+								class="w-full px-3 sm:px-4 py-2.5 sm:py-3 pr-10 sm:pr-12 border {passwordError ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'} rounded-lg focus:outline-none focus:ring-2 focus:border-transparent disabled:opacity-50 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
 							/>
 							<button
 								type="button"
@@ -232,6 +281,9 @@
 							</button>
 						</div>
 						<p class="text-xs text-gray-500 dark:text-gray-400 mt-1">8+ chars with uppercase, lowercase & number</p>
+						{#if passwordError}
+							<p class="text-xs text-red-500 mt-1">{passwordError}</p>
+						{/if}
 					</div>
 
 					<!-- Confirm Password Input -->
