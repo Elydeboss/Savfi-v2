@@ -12,6 +12,21 @@ export interface RegisterRequest {
 	referralCode?: string;
 }
 
+export interface OTPResponse {
+	message: string;
+	requiresOTP: true;
+	email: string;
+}
+
+export interface VerifyOTPRequest {
+	email: string;
+	otp: string;
+}
+
+export interface ResendOTPRequest {
+	email: string;
+}
+
 export interface AuthResponse {
 	message: string;
 	token: string;
@@ -21,6 +36,8 @@ export interface AuthResponse {
 		username: string;
 		role: string;
 		kycVerified?: boolean;
+		emailVerified?: boolean;
+		phantomWallet?: string;
 	};
 }
 
@@ -59,19 +76,43 @@ class AuthService {
 		throw new Error(response.error || 'Login failed');
 	}
 
-	async register(data: RegisterRequest): Promise<AuthResponse> {
+	async register(data: RegisterRequest): Promise<AuthResponse | OTPResponse> {
 		try {
-			const response = await apiService.post<AuthResponse>('/auth/register', data);
+			const response = await apiService.post<AuthResponse | OTPResponse>('/auth/register', data);
 			if (response.data) {
-				this.setToken(response.data.token);
-				this.setUserData(response.data.user);
-				return response.data;
+				// Check if OTP is required
+				if ('requiresOTP' in response.data && response.data.requiresOTP) {
+					return response.data as OTPResponse;
+				}
+				// Registration is complete (shouldn't happen with OTP flow)
+				const authResponse = response.data as AuthResponse;
+				this.setToken(authResponse.token);
+				this.setUserData(authResponse.user);
+				return authResponse;
 			}
 			throw new Error(response.error || 'Registration failed');
 		} catch (err: any) {
 			// Pass through the axios error with response.data for proper error handling
 			throw err;
 		}
+	}
+
+	async verifyOTP(data: VerifyOTPRequest): Promise<AuthResponse> {
+		const response = await apiService.post<AuthResponse>('/auth/verify-otp', data);
+		if (response.data) {
+			this.setToken(response.data.token);
+			this.setUserData(response.data.user);
+			return response.data;
+		}
+		throw new Error(response.error || 'OTP verification failed');
+	}
+
+	async resendOTP(data: ResendOTPRequest): Promise<{ message: string }> {
+		const response = await apiService.post<{ message: string }>('/auth/resend-otp', data);
+		if (response.data) {
+			return response.data;
+		}
+		throw new Error(response.error || 'Failed to resend OTP');
 	}
 
 	async getCurrentUser(): Promise<{ user: User }> {

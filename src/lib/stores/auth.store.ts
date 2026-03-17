@@ -93,16 +93,25 @@ function createAuthStore() {
 					referralCode
 				});
 
+				// Check if OTP is required
+				if ('requiresOTP' in response && response.requiresOTP) {
+					// Return special response indicating OTP is required
+					update(state => ({ ...state, isLoading: false, error: null }));
+					return { success: true, requiresOTP: true, email: response.email };
+				}
+
+				// Normal registration flow (shouldn't happen with OTP)
+				// Type assertion: we know this is AuthResponse because we checked for OTP
 				update(state => ({
 					...state,
-					user: response.user as any,
-					token: response.token,
+					user: (response as unknown as { user: User }).user as any,
+					token: (response as unknown as { token: string }).token,
 					isAuthenticated: true,
 					isLoading: false,
 					error: null
 				}));
 
-				return { success: true, user: response.user };
+				return { success: true, user: (response as unknown as { user: User }).user };
 			} catch (error: any) {
 				const errorMessage = error.response?.data?.error || error.message || 'Registration failed';
 				update(state => ({
