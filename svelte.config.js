@@ -4,7 +4,7 @@ import adapter from '@sveltejs/adapter-vercel';
 const config = {
 	kit: {
 		adapter: adapter({
-			runtime: 'nodejs20',
+			runtime: 'nodejs20.x',
 			regions: ['fra1']  // Match backend region (Frankfurt, good for Nigeria/Europe)
 		})
 	}
